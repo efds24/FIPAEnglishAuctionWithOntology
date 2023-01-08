@@ -15,17 +15,17 @@ import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ontologia.AceptarPuja;
 import ontologia.Informar;
 import ontologia.IniciarPuja;
 import ontologia.Libro;
 import ontologia.RechazarPuja;
 import ontologia.SubastaOntology;
-import ontologia.impl.DefaultAceptarPuja;
-import ontologia.impl.DefaultInformar;
-import ontologia.impl.DefaultIniciarPuja;
-import ontologia.impl.DefaultLibro;
-import ontologia.impl.DefaultRechazarPuja;
+
+
+
 
 public class VendedorComportamiento extends TickerBehaviour {
 
@@ -52,7 +52,7 @@ public class VendedorComportamiento extends TickerBehaviour {
         histCompradores = new ArrayList<>();
         onto = SubastaOntology.getInstance();
         codec = new SLCodec();
-        l = new DefaultLibro();
+        l = new Libro();
         l.setTitulo(libro);
 
     }
@@ -79,23 +79,21 @@ public class VendedorComportamiento extends TickerBehaviour {
                 cfp.setOntology(onto.getName());
                 cfp.setLanguage(codec.getName());
 
-                IniciarPuja ip = new DefaultIniciarPuja();
-                ip.setLibro(l); 
+                IniciarPuja ip = new IniciarPuja();
+                ip.setLibro(l);
                 ip.setPrecioActual((float) precioActual);
 
                 try {
                     Action action = new Action(myAgent.getAID(), ip);
-
                     myAgent.getContentManager().fillContent(cfp, action);
-                } catch (Codec.CodecException | OntologyException c) {
-                    c.printStackTrace();
+                } catch (Codec.CodecException | OntologyException ex) {
+                    Logger.getLogger(VendedorComportamiento.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
                 for (AID a : agentesCompradores) {
                     cfp.addReceiver(a);
                 }
 
-                //cfp.setContent(libro + " " + String.valueOf(precioActual));
                 cfp.setConversationId("subasta");
                 cfp.setReplyWith("cfp" + System.currentTimeMillis());
                 myAgent.send(cfp);
@@ -137,7 +135,7 @@ public class VendedorComportamiento extends TickerBehaviour {
                         ACLMessage rejectProposal = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
                         rejectProposal.setOntology(onto.getName());
                         rejectProposal.setLanguage(codec.getName());
-                        RechazarPuja rp = new DefaultRechazarPuja();
+                        RechazarPuja rp = new RechazarPuja();
                         rp.setLibro(l);
                         rp.setPrecioActual((float) precioActual);
 
@@ -160,7 +158,9 @@ public class VendedorComportamiento extends TickerBehaviour {
 
                 //Al que va ganando se le manda un ACCEPT_PROPOSAL
                 ACLMessage acceptProposal = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
-                AceptarPuja ap = new DefaultAceptarPuja();
+                acceptProposal.setOntology(onto.getName());
+                acceptProposal.setLanguage(codec.getName());
+                AceptarPuja ap = new AceptarPuja();
                 ap.setLibro(l);
                 ap.setPrecioActual((float) precioActual);
 
@@ -209,7 +209,9 @@ public class VendedorComportamiento extends TickerBehaviour {
                 for (AID a : compradoresEnPuja) {
                     if (!a.equals(comprador) && agenteEnPaginasAmarillas(a)) {
                         ACLMessage inform = new ACLMessage(ACLMessage.INFORM);
-                        Informar inf = new DefaultInformar();
+                        inform.setOntology(onto.getName());
+                        inform.setLanguage(codec.getName());
+                        Informar inf = new Informar();
                         inf.setLibro(l);
                         inf.setPrecioActual((float) precioActual);
 
@@ -229,15 +231,17 @@ public class VendedorComportamiento extends TickerBehaviour {
 
                 //Avisas al ganador
                 ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
-                Informar inf = new DefaultInformar();
+                request.setOntology(onto.getName());
+                request.setLanguage(codec.getName());
+                Informar inf = new Informar();
                 inf.setLibro(l);
                 inf.setPrecioActual((float) precioActual);
-                
-                try{
-                    Action action = new Action(myAgent.getAID(),inf);
-                    
+
+                try {
+                    Action action = new Action(myAgent.getAID(), inf);
+
                     myAgent.getContentManager().fillContent(request, action);
-                } catch(Codec.CodecException | OntologyException c){
+                } catch (Codec.CodecException | OntologyException c) {
                     c.printStackTrace();
                 }
                 request.addReceiver(comprador);

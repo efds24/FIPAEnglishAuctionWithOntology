@@ -10,7 +10,6 @@ public class AgenteVendedor extends Agent {
 
     //Interfaz gráfica del agente vendedor
     private PrincipalVendedor gui;
-    
     private Ontology ontology;
     private Codec codec;
 

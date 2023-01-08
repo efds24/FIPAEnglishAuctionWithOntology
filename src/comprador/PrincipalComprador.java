@@ -231,7 +231,7 @@ public class PrincipalComprador extends javax.swing.JFrame {
     }//GEN-LAST:event_nombreLibroActionPerformed
 
     private void addLibroBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addLibroBotonActionPerformed
-        if (!(nombreLibro.getText().isEmpty() && precioMaximo.getText().isEmpty())) {
+        if (!nombreLibro.getText().isEmpty() && !precioMaximo.getText().isEmpty()) {
             if(!libros.containsKey(nombreLibro)){
                 addFilaTablaLibros(nombreLibro.getText(), precioMaximo.getText());
                 libros.put(nombreLibro.getText(), Double.parseDouble(precioMaximo.getText()));

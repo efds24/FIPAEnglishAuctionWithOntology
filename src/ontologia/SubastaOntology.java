@@ -6,11 +6,11 @@ import jade.content.schema.*;
 
 /** file: SubastaOntology.java
  * @author OntologyBeanGenerator v4.1
- * @version 2023/01/5, 14:46:24
+ * @version 2023/01/6, 12:06:57
  */
 public class SubastaOntology extends jade.content.onto.Ontology  {
 
-  private static final long serialVersionUID = 6002065570892668532L;
+  private static final long serialVersionUID = 7150169933411678710L;
 
   //NAME
   public static final String ONTOLOGY_NAME = "subasta";
@@ -22,6 +22,9 @@ public class SubastaOntology extends jade.content.onto.Ontology  {
 
 
    // VOCABULARY
+    public static final String PUJAR_PUJAR="pujar";
+    public static final String PUJAR_LIBRO="libro";
+    public static final String PUJAR="Pujar";
     public static final String INFORMAR_LIBRO="libro";
     public static final String INFORMAR_PRECIOACTUAL="precioActual";
     public static final String INFORMAR="Informar";
@@ -57,6 +60,8 @@ public class SubastaOntology extends jade.content.onto.Ontology  {
     add(aceptarPujaSchema, ontologia.AceptarPuja.class);
     AgentActionSchema informarSchema = new AgentActionSchema(INFORMAR);
     add(informarSchema, ontologia.Informar.class);
+    AgentActionSchema pujarSchema = new AgentActionSchema(PUJAR);
+    add(pujarSchema, ontologia.Pujar.class);
 
     // adding AID(s)
 
@@ -73,6 +78,8 @@ public class SubastaOntology extends jade.content.onto.Ontology  {
     aceptarPujaSchema.add(ACEPTARPUJA_LIBRO, libroSchema, ObjectSchema.MANDATORY);
     informarSchema.add(INFORMAR_PRECIOACTUAL, (TermSchema)getSchema(BasicOntology.FLOAT), ObjectSchema.MANDATORY);
     informarSchema.add(INFORMAR_LIBRO, libroSchema, ObjectSchema.MANDATORY);
+    pujarSchema.add(PUJAR_LIBRO, libroSchema, ObjectSchema.MANDATORY);
+    pujarSchema.add(PUJAR_PUJAR, (TermSchema)getSchema(BasicOntology.BOOLEAN), ObjectSchema.MANDATORY);
 
     // adding name mappings
 

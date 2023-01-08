@@ -1,25 +1,48 @@
 package ontologia;
 
-
-
 /**
 * Protege name: IniciarPuja
 * @author OntologyBeanGenerator v4.1
-* @version 2023/01/5, 14:46:24
+* @version 2023/01/6, 09:41:36
 */
-public interface IniciarPuja extends jade.content.AgentAction {
+public class IniciarPuja implements jade.content.AgentAction {
+
+  private static final long serialVersionUID = -9132062179456803291L;
+
+  private String _internalInstanceName = null;
+
+  public IniciarPuja() {
+    this._internalInstanceName = "";
+  }
+
+  public IniciarPuja(String instance_name) {
+    this._internalInstanceName = instance_name;
+  }
+
+  public String toString() {
+    return _internalInstanceName;
+  }
 
    /**
    * Protege name: precioActual
    */
-   public void setPrecioActual(float value);
-   public float getPrecioActual();
+   private float precioActual;
+   public void setPrecioActual(float value) { 
+    this.precioActual=value;
+   }
+   public float getPrecioActual() {
+     return this.precioActual;
+   }
 
    /**
    * Protege name: libro
-     * @param value
    */
-   public void setLibro(Libro value);
-   public Libro getLibro();
+   private Libro libro;
+   public void setLibro(Libro value) { 
+    this.libro=value;
+   }
+   public Libro getLibro() {
+     return this.libro;
+   }
 
 }
